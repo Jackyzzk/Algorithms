@@ -23,7 +23,6 @@ class Solution(object):
         return num ^ mask
 
 
-
 def main():
     num = 5
     test = Solution()

@@ -20,47 +20,63 @@ class Solution(object):
     \   \
      3   1
 输出: 7
-解释: 小偷一晚能够盗取的最高金额 = 3 + 3 + 1 = 7.
+解释: 小偷一晚能够盗取的最高金额 = 3 + 3 + 1 = 7.
 输入: [3,4,5,1,3,null,1]
-     3
+     3
     / \
    4   5
   / \   \
  1   3   1
 输出: 9
-解释: 小偷一晚能够盗取的最高金额 = 4 + 5 = 9.
+解释: 小偷一晚能够盗取的最高金额 = 4 + 5 = 9.
 链接：https://leetcode-cn.com/problems/house-robber-iii/
     """
-    def dp(self, cur):
-        if not cur:
-            return [0, 0]
-
-        l = self.dp(cur.left)
-        r = self.dp(cur.right)
-
-        return [max(l) + max(r), cur.val + l[0] + r[0]]
-
     def rob(self, root):
         """
         :type root: TreeNode
         :rtype: int
         """
-        return max(self.dp(root))
+        # 树的动态规划
+        # opt = {(root, 0): 0, (root, 1): root.val}  表示该节点选(1)或不选(0)的最大值
+        if not root:
+            return 0
+        opt = {}
+
+        def dfs(root):
+            if not root:
+                return 0
+            dfs(root.left)
+            dfs(root.right)
+            opt[root, 0] = max(opt.get((root.left, 1), 0), opt.get((root.left, 0), 0)) + \
+                           max(opt.get((root.right, 1), 0), opt.get((root.right, 0), 0))
+            opt[root, 1] = opt.get((root.left, 0), 0) + opt.get((root.right, 0), 0) + root.val
+
+        dfs(root)
+        return max(opt[root, 0], opt[root, 1])
 
 
 def create(nums, i):
-    if nums[i] is None:
+    if not nums:
         return None
-    root = TreeNode(nums[i])
-    root.left = create(nums, i * 2 + 1) if i * 2 + 1 < m else None
-    root.right = create(nums, i * 2 + 2) if i * 2 + 2 < m else None
+    root = TreeNode(nums.pop(0))
+    que = [root]
+    while que:
+        node = que.pop(0)
+        left = nums.pop(0) if nums else None
+        right = nums.pop(0) if nums else None
+        node.left = TreeNode(left) if left is not None else None
+        node.right = TreeNode(right) if right is not None else None
+        if node.left:
+            que.append(node.left)
+        if node.right:
+            que.append(node.right)
     return root
 
 
 def main():
-    # nums = [3, 2, 3, None, 3, None, 1]  # 7
+    nums = [3, 2, 3, None, 3, None, 1]  # 7
     nums = [3, 4, 5, 1, 3, None, 1]  # 9
-    # nums = [4, 1, None, 2, None, None, None, 3]  # 7
+    nums = [4, 1, None, 2, None, None, None, 3]  # 7
     global m
     m = len(nums)
     root = create(nums, 0)

@@ -29,7 +29,7 @@ class Solution(object):
             return 0
         n1 = self.minDepth(root.left)
         n2 = self.minDepth(root.right)
-        if n2 == 0:
+        if n2 == 0:  # 保证是叶子节点
             return n1 + 1
         if n1 == 0:
             return n2 + 1
@@ -37,11 +37,20 @@ class Solution(object):
 
 
 def create(nums, i):
-    if nums[i] is None:
+    if not nums:
         return None
-    root = TreeNode(nums[i])
-    root.left = create(nums, i * 2 + 1) if i * 2 + 1 < m else None
-    root.right = create(nums, i * 2 + 2) if i * 2 + 2 < m else None
+    root = TreeNode(nums.pop(0))
+    que = [root]
+    while que:
+        node = que.pop(0)
+        left = nums.pop(0) if nums else None
+        right = nums.pop(0) if nums else None
+        node.left = TreeNode(left) if left is not None else None
+        node.right = TreeNode(right) if right is not None else None
+        if node.left:
+            que.append(node.left)
+        if node.right:
+            que.append(node.right)
     return root
 
 

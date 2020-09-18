@@ -64,11 +64,20 @@ class Solution(object):
 
 
 def create(nums, i):
-    if nums[i] is None:
+    if not nums:
         return None
-    root = TreeNode(nums[i])
-    root.left = create(nums, i * 2 + 1) if i * 2 + 1 < m else None
-    root.right = create(nums, i * 2 + 2) if i * 2 + 2 < m else None
+    root = TreeNode(nums.pop(0))
+    que = [root]
+    while que:
+        node = que.pop(0)
+        left = nums.pop(0) if nums else None
+        right = nums.pop(0) if nums else None
+        node.left = TreeNode(left) if left is not None else None
+        node.right = TreeNode(right) if right is not None else None
+        if node.left:
+            que.append(node.left)
+        if node.right:
+            que.append(node.right)
     return root
 
 
@@ -87,7 +96,7 @@ def bfs(root):
 
 
 def main():
-    nums = [3, 0, 4, None, 2, None, None, None, None, 1]
+    nums = [3, 0, 4, None, 2, None, None, 1]
     l, r = 1, 3
     # nums = [1, 0, 2]
     # l, r = 1, 2

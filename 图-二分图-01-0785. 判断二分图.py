@@ -5,7 +5,7 @@ class Solution(object):
 并使图中的每一条边的两个节点一个来自A集合，一个来自B集合，我们就将这个图称为二分图。
 graph将会以邻接表方式给出，graph[i]表示图中与节点i相连的所有节点。
 每个节点都是一个在0到graph.length-1之间的整数。这图中没有自环和平行边：
- graph[i] 中不存在i，并且graph[i]中没有重复的值。
+ graph[i] 中不存在i，并且graph[i]中没有重复的值。
 
 输入: [[1,3], [0,2], [1,3], [0,2]]
 输出: true
@@ -49,7 +49,7 @@ graph[i] 不会包含 i 或者有重复的值。
                 for x in graph[t]:
                     if not color[x]:
                         que.append(x)
-                        color[x] = color[t] ^ 3
+                        color[x] = color[t] ^ 3  # 相邻时染上不相同的颜色，有 1 和 2 号色
                     elif color[x] & color[t]:
                         return False
             return True

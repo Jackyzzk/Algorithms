@@ -26,9 +26,9 @@ class Solution(object):
 输入: root = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], k = 3
 输出: [[1, 2, 3, 4], [5, 6, 7], [8, 9, 10]]
 
-root 的长度范围： [0, 1000].
+root 的长度范围： [0, 1000].
 输入的每个节点的大小范围：[0, 999].
-k 的取值范围： [1, 50].
+k 的取值范围： [1, 50].
 链接：https://leetcode-cn.com/problems/split-linked-list-in-parts/
     """
     def splitListToParts(self, root, k):

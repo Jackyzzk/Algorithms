@@ -18,7 +18,7 @@ class Solution(object):
         target = sum(nums)
         if target & 1:
             return False
-        rec = 1
+        rec = 1  # 表示 0
         target = 1 << (target >> 1)
         for x in nums:
             rec |= rec << x  # 记录集合内元素所有可能的和标记在二进制位上

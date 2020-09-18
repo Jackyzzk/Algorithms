@@ -16,10 +16,23 @@ class Solution(object):
         :type s: str
         :rtype: int
         """
+        n, count = len(s), 0
+        opt = [[1] * n for i in range(n)]
+        for i in range(n - 1, -1, -1):
+            for j in range(i + 1, n):
+                if s[i] == s[j]:
+                    opt[i][j] = opt[i + 1][j - 1]
+                    if opt[i][j]:
+                        count += 1
+                else:
+                    opt[i][j] = 0
+        return count + n
 
 
 def main():
     s = "aaa"
+    s = 'abc'
+    s = "fdsklf"  # 6
     test = Solution()
     ret = test.countSubstrings(s)
     print(ret)

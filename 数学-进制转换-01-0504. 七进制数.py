@@ -5,7 +5,7 @@ class Solution(object):
 输出: "202"
 输入: -7
 输出: "-10"
-注意: 输入范围是 [-1e7, 1e7] 。
+注意: 输入范围是 [-1e7, 1e7] 。
 链接：https://leetcode-cn.com/problems/base-7/
     """
     def convertToBase7(self, num):

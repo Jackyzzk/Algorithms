@@ -8,14 +8,14 @@ class TreeNode(object):
 
 class Solution(object):
     """
-给定一个二叉搜索树，编写一个函数 kthSmallest 来查找其中第 k 个最小的元素。
+给定一个二叉搜索树，编写一个函数 kthSmallest 来查找其中第 k 个最小的元素。
 你可以假设 k 总是有效的，1 ≤ k ≤ 二叉搜索树元素个数。
 输入: root = [3,1,4,null,2], k = 1
    3
   / \
  1   4
   \
-   2
+   2
 输出: 1
 输入: root = [5,3,6,2,4,null,null,1], k = 3
        5
@@ -26,7 +26,7 @@ class Solution(object):
   /
  1
 输出: 3
-如果二叉搜索树经常被修改（插入/删除操作）并且你需要频繁地查找第 k 小的值，你将如何优化 kthSmallest 函数？
+如果二叉搜索树经常被修改（插入/删除操作）并且你需要频繁地查找第 k 小的值，你将如何优化 kthSmallest 函数？
 链接：https://leetcode-cn.com/problems/kth-smallest-element-in-a-bst/
     """
     def kthSmallest(self, root, k):
@@ -49,11 +49,20 @@ class Solution(object):
 
 
 def create(nums, i):
-    if nums[i] is None:
+    if not nums:
         return None
-    root = TreeNode(nums[i])
-    root.left = create(nums, i * 2 + 1) if i * 2 + 1 < m else None
-    root.right = create(nums, i * 2 + 2) if i * 2 + 2 < m else None
+    root = TreeNode(nums.pop(0))
+    que = [root]
+    while que:
+        node = que.pop(0)
+        left = nums.pop(0) if nums else None
+        right = nums.pop(0) if nums else None
+        node.left = TreeNode(left) if left is not None else None
+        node.right = TreeNode(right) if right is not None else None
+        if node.left:
+            que.append(node.left)
+        if node.right:
+            que.append(node.right)
     return root
 
 

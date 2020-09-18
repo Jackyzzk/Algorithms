@@ -18,24 +18,26 @@ class Solution(object):
         nums_sum = sum(nums)
         if nums_sum & 1:
             return False
-        nums_sum >>= 1
         n = len(nums)
-        opt = [[0] * (nums_sum + 1) for i in range(n + 1)]
+        half_sum = nums_sum >> 1
+        opt = [[False] * (half_sum + 1) for i in range(n + 1)]  # 前 i 个数能否构成和为 j
+        opt[0][0] = False
+
         for i in range(1, n + 1):
-            for j in range(1, nums_sum + 1):
-                if j >= nums[i - 1]:
-                    opt[i][j] = max(nums[i - 1] + opt[i - 1][j - nums[i - 1]], opt[i - 1][j])
-                    if opt[i][j] == nums_sum:
-                        return True
+            for j in range(1, half_sum + 1):
+                if j > nums[i - 1]:
+                    opt[i][j] = True if opt[i - 1][j - nums[i - 1]] or opt[i - 1][j] else False
+                elif j < nums[i - 1]:
+                    opt[i][j] = True if opt[i - 1][j] else False
                 else:
-                    opt[i][j] = opt[i - 1][j]
-        return False
+                    opt[i][j] = True
+        return opt[-1][-1]
 
 
 def main():
     nums = [1, 5, 11, 5]
     nums = [1, 2, 3, 5]
-    nums = []
+    # nums = []
     test = Solution()
     ret = test.canPartition(nums)
     print(ret)

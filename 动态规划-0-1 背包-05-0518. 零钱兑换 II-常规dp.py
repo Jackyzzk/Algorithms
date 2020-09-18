@@ -1,6 +1,6 @@
 class Solution(object):
     """
-给定不同面额的硬币和一个总金额。写出函数来计算可以凑成总金额的硬币组合数。假设每一种面额的硬币有无限个。 
+给定不同面额的硬币和一个总金额。写出函数来计算可以凑成总金额的硬币组合数。假设每一种面额的硬币有无限个。
 输入: amount = 5, coins = [1, 2, 5]
 输出: 4
 解释: 有四种方式可以凑成总金额:
@@ -15,7 +15,7 @@ class Solution(object):
 输出: 1
 你可以假设：
 0 <= amount (总金额) <= 5000
-1 <= coin (硬币面额) <= 5000
+1 <= coin (硬币面额) <= 5000
 硬币种类不超过 500 种
 结果符合 32 位符号整数
 链接：https://leetcode-cn.com/problems/coin-change-2
@@ -27,7 +27,7 @@ class Solution(object):
         :rtype: int
         """
         n = len(coins)
-        opt = [[0] * (amount + 1) for i in range(n + 1)]
+        opt = [[0] * (amount + 1) for i in range(n + 1)]  # 前 i 种硬币，构成金额为 j 的种数
         opt[0][0] = 1
         for i in range(1, n + 1):
             x = coins[i - 1]

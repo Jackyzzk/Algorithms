@@ -20,15 +20,15 @@ class Solution(object):
     \   \
      3   1
 输出: 7
-解释: 小偷一晚能够盗取的最高金额 = 3 + 3 + 1 = 7.
+解释: 小偷一晚能够盗取的最高金额 = 3 + 3 + 1 = 7.
 输入: [3,4,5,1,3,null,1]
-     3
+     3
     / \
    4   5
   / \   \
  1   3   1
 输出: 9
-解释: 小偷一晚能够盗取的最高金额 = 4 + 5 = 9.
+解释: 小偷一晚能够盗取的最高金额 = 4 + 5 = 9.
 链接：https://leetcode-cn.com/problems/house-robber-iii/
     """
     def rob(self, root):
@@ -36,27 +36,42 @@ class Solution(object):
         :type root: TreeNode
         :rtype: int
         """
-        if not root:
-            return 0
-        m1 = self.rob(root.left) + self.rob(root.right)
-        m2 = self.rob(root.left.left) + self.rob(root.left.right) if root.left else 0
-        m3 = self.rob(root.right.left) + self.rob(root.right.right) if root.right else 0
-        return max(m1, m2 + m3 + root.val)
+        def dfs(root):  # 返回包括该节点的选 和 不选的最大值组成的列表 [ignore, select]
+            if not root:
+                return [0, 0]
+            left = dfs(root.left)
+            right = dfs(root.right)
+
+            ignore = max(left) + max(right)
+            select = root.val + left[0] + right[0]
+            return [ignore, select]
+
+        return max(dfs(root))
 
 
 def create(nums, i):
-    if nums[i] is None:
+    if not nums:
         return None
-    root = TreeNode(nums[i])
-    root.left = create(nums, i * 2 + 1) if i * 2 + 1 < m else None
-    root.right = create(nums, i * 2 + 2) if i * 2 + 2 < m else None
+    root = TreeNode(nums.pop(0))
+    que = [root]
+    while que:
+        node = que.pop(0)
+        left = nums.pop(0) if nums else None
+        right = nums.pop(0) if nums else None
+        node.left = TreeNode(left) if left is not None else None
+        node.right = TreeNode(right) if right is not None else None
+        if node.left:
+            que.append(node.left)
+        if node.right:
+            que.append(node.right)
     return root
 
 
 def main():
-    # nums = [3, 2, 3, None, 3, None, 1]  # 7
+    nums = [3, 2, 3, None, 3, None, 1]  # 7
     nums = [3, 4, 5, 1, 3, None, 1]  # 9
-    # nums = [4, 1, None, 2, None, None, None, 3]  # 7
+    nums = [4, 1, None, 2, None, None, None, 3]  # 7
+    nums = []
     global m
     m = len(nums)
     root = create(nums, 0)

@@ -26,37 +26,51 @@ root = [10,5,-3,3,2,null,11,3,-2,null,1], sum = 8
 3.  -3 -> 11
 链接：https://leetcode-cn.com/problems/path-sum-iii/
     """
-    count = 0
-
-    def path(self, root, sum):
-        if not root:
-            return 0
-        if sum == root.val:
-            self.count += 1
-        self.path(root.left, sum - root.val)
-        self.path(root.right, sum - root.val)
-        return 0
-
     def pathSum(self, root, sum):
         """
         :type root: TreeNode
         :type sum: int
         :rtype: int
         """
-        if not root:
-            return 0
-        self.path(root, sum)
-        self.pathSum(root.left, sum)
-        self.pathSum(root.right, sum)
+        self.pre_sum = 0
+        self.count = 0
+        self.target = sum
+        rec = {0: 1}
+
+        def dfs(root):
+            if not root:
+                return root
+
+            self.pre_sum += root.val
+            if self.pre_sum - self.target in rec:
+                self.count += rec[self.pre_sum - self.target]
+            rec[self.pre_sum] = rec.get(self.pre_sum, 0) + 1
+
+            dfs(root.left)
+            dfs(root.right)
+
+            rec[self.pre_sum] -= 1
+            self.pre_sum -= root.val  # 这两步是回溯
+
+        dfs(root)
         return self.count
 
 
 def create(nums, i):
-    if nums[i] is None:
+    if not nums:
         return None
-    root = TreeNode(nums[i])
-    root.left = create(nums, i * 2 + 1) if i * 2 + 1 < m else None
-    root.right = create(nums, i * 2 + 2) if i * 2 + 2 < m else None
+    root = TreeNode(nums.pop(0))
+    que = [root]
+    while que:
+        node = que.pop(0)
+        left = nums.pop(0) if nums else None
+        right = nums.pop(0) if nums else None
+        node.left = TreeNode(left) if left is not None else None
+        node.right = TreeNode(right) if right is not None else None
+        if node.left:
+            que.append(node.left)
+        if node.right:
+            que.append(node.right)
     return root
 
 
@@ -65,6 +79,8 @@ def main():
     # h = 8  # 3
     nums = [1, -2, -3, 1, 3, -2, None, -1]
     h = -1  # 4
+    nums = [5,4,8,11,None,13,4,7,2,None,None,5,1]
+    h = 22  # 3
     global m
     m = len(nums)
     root = create(nums, 0)

@@ -27,16 +27,16 @@ class Solution(object):
         if not nums:
             return None
 
-        def create(nums, i, j):
+        def create(i, j):
             n = (i + j) // 2
             root = TreeNode(nums[n])
             if i <= n - 1:
-                root.left = create(nums, i, n - 1)
+                root.left = create(i, n - 1)
             if n + 1 <= j:
-                root.right = create(nums, n + 1, j)
+                root.right = create(n + 1, j)
             return root
 
-        return create(nums, 0, len(nums) - 1)
+        return create(0, len(nums) - 1)
 
 
 def bfs(root):
@@ -55,7 +55,7 @@ def bfs(root):
 
 def main():
     nums = [-10, -3, 0, 5, 9]
-    nums = []
+    # nums = []
     test = Solution()
     ret = test.sortedArrayToBST(nums)
     bfs(ret)

@@ -29,15 +29,37 @@ class Solution(object):
         :type root: TreeNode
         :rtype: List[int]
         """
-
+        #  BST 是排序树 遍历用中序遍历
+        if not root:
+            return []
+        rec, que, p = {}, [], root
+        while que or p:
+            while p:
+                que.append(p)
+                p = p.left
+            p = que.pop()
+            rec[p.val] = rec.get(p.val, 0) + 1
+            p = p.right
+        m = max(rec.values())
+        ret = [k for k, v in rec.items() if v == m]
+        return ret
 
 
 def create(nums, i):
-    if nums[i] is None:
+    if not nums:
         return None
-    root = TreeNode(nums[i])
-    root.left = create(nums, i * 2 + 1) if i * 2 + 1 < m else None
-    root.right = create(nums, i * 2 + 2) if i * 2 + 2 < m else None
+    root = TreeNode(nums.pop(0))
+    que = [root]
+    while que:
+        node = que.pop(0)
+        left = nums.pop(0) if nums else None
+        right = nums.pop(0) if nums else None
+        node.left = TreeNode(left) if left is not None else None
+        node.right = TreeNode(right) if right is not None else None
+        if node.left:
+            que.append(node.left)
+        if node.right:
+            que.append(node.right)
     return root
 
 
@@ -56,7 +78,7 @@ def bfs(root):
 
 
 def main():
-    nums = [1, None, 3, None, None, 2]
+    nums = [1, None, 2, None, None, 2]
     global m
     m = len(nums)
     root = create(nums, 0)

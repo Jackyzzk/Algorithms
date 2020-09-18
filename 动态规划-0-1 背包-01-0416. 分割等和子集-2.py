@@ -33,7 +33,7 @@ class Solution(object):
 def main():
     nums = [1, 5, 11, 5]
     # nums = [1, 2, 3, 5]
-    # nums = []
+    nums = []
     test = Solution()
     ret = test.canPartition(nums)
     print(ret)
